@@ -184,53 +184,10 @@ export const AttendancePage = () => {
             <div className="p-6">
               <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                 <Calendar className="text-orange-300" size={24} />
-                {calendarMonth.format('MMMM YYYY')}
-              </h3>
-
-              {/* Month Navigation */}
-              <div className="flex gap-2 mb-6">
-                <button
-                  onClick={() => setCalendarMonth(calendarMonth.subtract(1, 'month'))}
-                  className="flex-1 p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors text-sm font-medium"
-                >
-                  ← Prev
-                </button>
-                <button
-                  onClick={() => setCalendarMonth(dayjs())}
-                  className="flex-1 p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors text-sm font-medium"
-                >
-                  Today
-                </button>
-                <button
-                  onClick={() => setCalendarMonth(calendarMonth.add(1, 'month'))}
-                  className="flex-1 p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors text-sm font-medium"
-                >
-                  Next →
-                </button>
-              </div>
-
-              {/* Weekday Headers */}
-              <div className="grid grid-cols-7 gap-2 mb-4">
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                  <div key={day} className="text-center text-orange-200 text-xs font-bold">
-                    {day}
-                  </div>
-                ))}
-              </div>
-
-              {/* Calendar Days */}
-              <div className="grid grid-cols-7 gap-2">
-                {days.map((day, index) => {
-                  const status = day ? getAttendanceStatus(day) : null
-                  const isToday = day && day.format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')
-
-                  return (
-                    <div
-                      key={index}
-                      className={`aspect-square rounded-lg border-2 flex items-center justify-center text-xs font-bold transition-all ${
-                        !day
-                          ? 'bg-transparent border-transparent'
-                          : status
+      </div>
+    </div>
+  )
+}
                             ? `${getStatusColor(status)} border-current`
                             : isToday
                               ? 'bg-blue-500/40 border-blue-400 text-blue-100'
@@ -266,6 +223,49 @@ export const AttendancePage = () => {
             </div>
           </Card>
         </div>
+=======
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card'
+import { useAttendanceRecords } from '@/hooks/useAttendance'
+
+export const AttendancePage = () => {
+  const { data, isLoading, error } = useAttendanceRecords()
+  const records = data?.data ?? []
+
+  return (
+    <div className="min-h-screen bg-gray-50 md:pl-64">
+      <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+        <h1 className="text-2xl font-semibold text-gray-900">Attendance</h1>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Records</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {isLoading && <p className="text-gray-500">Loading attendance...</p>}
+            {error && <p className="text-red-600">Unable to load attendance.</p>}
+            {!isLoading && records.length === 0 && !error && (
+              <p className="text-gray-500">No records yet.</p>
+            )}
+            <div className="space-y-3">
+              {records.map((record) => (
+                <div
+                  key={record.id}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+                >
+                  <div>
+                    <p className="font-medium text-gray-900">{record.date}</p>
+                    <p className="text-sm text-gray-600">Status: {record.status}</p>
+                  </div>
+                  <div className="text-right text-sm text-gray-600">
+                    <p>Check-in: {record.checkInTime || '—'}</p>
+                    <p>Check-out: {record.checkOutTime || '—'}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+>>>>>>> 23e07a23744ef28d70fc82216f1ea6bbdb137e7e
       </div>
     </div>
   )

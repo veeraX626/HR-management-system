@@ -1,5 +1,5 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card'
 import { useAuthStore } from '@/stores/auth'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/UI/Card'
 import {
   BarChart3,
   FileText,
@@ -21,62 +21,6 @@ export const DashboardPage = () => {
   if (isAdmin) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-8 md:ml-64 pt-24">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-400 to-primary-200 bg-clip-text text-transparent mb-2">
-              Admin Dashboard
-            </h1>
-            <p className="text-slate-300">Welcome back, {user?.firstName}! Here's your performance overview.</p>
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* Total Employees Card */}
-            <Card hover className="!bg-gradient-to-br !from-blue-500/20 !to-blue-600/20 !border-blue-400/30">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-200 text-sm font-medium">Total Employees</p>
-                  <p className="text-3xl font-bold text-white mt-2">245</p>
-                  <div className="flex items-center gap-1 mt-2 text-green-400 text-xs font-semibold">
-                    <ArrowUpRight size={16} />
-                    <span>+12% from last month</span>
-                  </div>
-                </div>
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <Users size={32} className="text-white" />
-                </div>
-              </div>
-            </Card>
-
-            {/* Present Today Card */}
-            <Card hover className="!bg-gradient-to-br !from-green-500/20 !to-green-600/20 !border-green-400/30">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-green-200 text-sm font-medium">Present Today</p>
-                  <p className="text-3xl font-bold text-white mt-2">132</p>
-                  <div className="flex items-center gap-1 mt-2 text-green-400 text-xs font-semibold">
-                    <ArrowUpRight size={16} />
-                    <span>98% attendance</span>
-                  </div>
-                </div>
-                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <TrendingUp size={32} className="text-white" />
-                </div>
-              </div>
-            </Card>
-
-            {/* Pending Leaves Card */}
-            <Card hover className="!bg-gradient-to-br !from-orange-500/20 !to-orange-600/20 !border-orange-400/30">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-200 text-sm font-medium">Pending Leaves</p>
-                  <p className="text-3xl font-bold text-white mt-2">12</p>
-                  <div className="flex items-center gap-1 mt-2 text-red-400 text-xs font-semibold">
-                    <ArrowDownRight size={16} />
-                    <span>-2 from last week</span>
-                  </div>
-                </div>
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
                   <FileText size={32} className="text-white" />
                 </div>
@@ -319,6 +263,59 @@ export const DashboardPage = () => {
             </div>
           </Card>
         </div>
+=======
+  return (
+    <div className="min-h-screen bg-gray-50 md:pl-64">
+      <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+        <div className="flex items-baseline justify-between">
+          <div>
+            <p className="text-sm text-gray-500">Overview</p>
+            <h1 className="text-2xl font-semibold text-gray-900">
+              {user ? `Hello, ${user.firstName} ${user.lastName}` : 'Dashboard'}
+            </h1>
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle>Attendance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold text-gray-900">--</p>
+              <p className="text-sm text-gray-600">Recent check-ins</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Leaves</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold text-gray-900">--</p>
+              <p className="text-sm text-gray-600">Requests this month</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Payroll</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold text-gray-900">--</p>
+              <p className="text-sm text-gray-600">Next payout</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Getting Started</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-gray-700">
+            <p>Use the sidebar to access attendance, leaves, and profile.</p>
+            <p>Data will populate once your API is connected.</p>
+          </CardContent>
+        </Card>
+>>>>>>> 23e07a23744ef28d70fc82216f1ea6bbdb137e7e
       </div>
     </div>
   )

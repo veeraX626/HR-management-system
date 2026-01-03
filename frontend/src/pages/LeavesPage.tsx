@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useMyLeaves, useAllLeaves, useApplyLeave, useApproveLeave, useRejectLeave } from '@/hooks/useLeaves'
 import { useAuthStore } from '@/stores/auth'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/UI/Card'
@@ -18,37 +19,17 @@ const leaveSchema = z.object({
 })
 
 type LeaveFormData = z.infer<typeof leaveSchema>
+=======
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card'
+import { useMyLeaves } from '@/hooks/useLeaves'
+>>>>>>> 23e07a23744ef28d70fc82216f1ea6bbdb137e7e
 
 export const LeavesPage = () => {
-  const { user } = useAuthStore()
-  const { data: myLeaves } = useMyLeaves()
-  const { data: allLeaves } = useAllLeaves()
-  const { mutate: applyLeave, isPending: applyLoading } = useApplyLeave()
-  const { mutate: approveLeave } = useApproveLeave()
-  const { mutate: rejectLeave } = useRejectLeave()
-  const [showForm, setShowForm] = useState(false)
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<LeaveFormData>({
-    resolver: zodResolver(leaveSchema),
-  })
-
-  const onSubmit = (data: LeaveFormData) => {
-    applyLeave(data, {
-      onSuccess: () => {
-        setShowForm(false)
-        reset()
-      },
-    })
-  }
-
-  const isAdmin = user?.role === 'ADMIN'
+  const { data, isLoading, error } = useMyLeaves()
+  const leaves = data?.data ?? []
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary-900 to-slate-900 p-4 md:p-8 md:ml-64">
       <div className="max-w-7xl">
         {/* Header */}
@@ -297,6 +278,39 @@ export const LeavesPage = () => {
             </div>
           </Card>
         )}
+=======
+    <div className="min-h-screen bg-gray-50 md:pl-64">
+      <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+        <h1 className="text-2xl font-semibold text-gray-900">Leaves</h1>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>My Requests</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {isLoading && <p className="text-gray-500">Loading leave requests...</p>}
+            {error && <p className="text-red-600">Unable to load leave data.</p>}
+            {!isLoading && leaves.length === 0 && !error && (
+              <p className="text-gray-500">No leave requests yet.</p>
+            )}
+            <div className="space-y-3">
+              {leaves.map((leave) => (
+                <div
+                  key={leave.id}
+                  className="p-3 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-medium text-gray-900">{leave.type}</p>
+                    <p className="text-sm text-gray-600">{leave.startDate} → {leave.endDate}</p>
+                    <p className="text-sm text-gray-600">Duration: {leave.duration} days</p>
+                  </div>
+                  <span className="text-sm font-semibold text-primary-700">{leave.status}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+>>>>>>> 23e07a23744ef28d70fc82216f1ea6bbdb137e7e
       </div>
     </div>
   )

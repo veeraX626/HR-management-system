@@ -1,5 +1,5 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card'
 import { SignupForm } from '@/components/Auth/SignupForm'
-import { Card } from '@/components/UI/Card'
 
 export const SignupPage = () => {
   return (

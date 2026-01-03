@@ -1,10 +1,8 @@
-import { useState } from 'react'
-import { useProfile, useUpdateProfile } from '@/hooks/useProfile'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card'
 import { useAuthStore } from '@/stores/auth'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/UI/Card'
 import { Input } from '@/components/UI/Input'
 import { Button } from '@/components/UI/Button'
 import { Camera, Mail, Phone, MapPin, Briefcase, DollarSign, FileText, Download } from 'lucide-react'
@@ -24,42 +22,6 @@ type ProfileFormData = z.infer<typeof profileSchema>
 
 export const ProfilePage = () => {
   const { user } = useAuthStore()
-  const { data: profile, isLoading } = useProfile()
-  const { mutate: updateProfile, isPending } = useUpdateProfile()
-  const [imagePreview, setImagePreview] = useState<string>()
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      phone: profile?.phone,
-      dateOfBirth: profile?.dateOfBirth,
-      address: profile?.address,
-      city: profile?.city,
-      state: profile?.state,
-      zipCode: profile?.zipCode,
-      jobTitle: profile?.jobTitle,
-      department: profile?.department,
-    },
-  })
-
-  const onSubmit = (data: ProfileFormData) => {
-    updateProfile(data)
-  }
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary-900 to-slate-900 p-4 md:p-8 md:ml-64">

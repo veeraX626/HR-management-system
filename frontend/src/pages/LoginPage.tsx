@@ -1,8 +1,9 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card'
 import { LoginForm } from '@/components/Auth/LoginForm'
-import { Card } from '@/components/UI/Card'
 
 export const LoginPage = () => {
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary-900 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse-slow" />
@@ -30,6 +31,18 @@ export const LoginPage = () => {
           © 2024 Dayflow HRMS. All rights reserved.
         </p>
       </div>
+=======
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 flex items-center justify-center px-4">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
+          <p className="text-center text-gray-600 mt-2">Sign in to access your workspace</p>
+        </CardHeader>
+        <CardContent>
+          <LoginForm />
+        </CardContent>
+      </Card>
+>>>>>>> 23e07a23744ef28d70fc82216f1ea6bbdb137e7e
     </div>
   )
 }
