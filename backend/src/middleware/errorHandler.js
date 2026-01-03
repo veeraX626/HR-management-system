@@ -1,9 +1,10 @@
 import { logger } from '../utils/logger.js';
 
+// Global error handler middleware - MUST have 4 parameters (err, req, res, next)
 export const errorHandler = (err, req, res, next) => {
   // Log the error with full details
   logger.error(`Error occurred: ${err.message}`, err);
-  console.error(`[ERROR] ${err.message}`, err.stack);
+  console.error(`❌ [ERROR] ${err.message}`, err.stack);
 
   // Prisma database connection error (P1001)
   if (err.code === 'P1001') {
@@ -80,17 +81,17 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
-  // Default server error
-  const statusCode = err.status || err.statusCode || 500;
-  console.error(`[SERVER ERROR] Status ${statusCode}: ${err.message}`);
+  // Default server error - return 500 status
+  console.error(`❌ [SERVER ERROR] Status 500: ${err.message}`);
   
-  res.status(statusCode).json({
+  res.status(500).json({
     success: false,
+    error: 'Internal Server Error',
     message: process.env.NODE_ENV === 'development' 
       ? err.message 
       : 'An unexpected error occurred. Please try again later.',
     ...(process.env.NODE_ENV === 'development' && { 
-      error: {
+      details: {
         message: err.message,
         stack: err.stack,
         code: err.code
