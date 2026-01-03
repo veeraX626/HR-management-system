@@ -10,6 +10,7 @@ import { Sidebar } from '@/components/UI/Sidebar'
 import { LoginPage } from '@/pages/LoginPage'
 import { SignupPage } from '@/pages/SignupPage'
 import { DashboardPage } from '@/pages/DashboardPage'
+import { EmployeeDashboard } from '@/pages/EmployeeDashboard'
 import { ProfilePage } from '@/pages/ProfilePage'
 import { AttendancePage } from '@/pages/AttendancePage'
 import { LeavesPage } from '@/pages/LeavesPage'
@@ -48,6 +49,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employees"
+          element={
+            <ProtectedRoute>
+              <EmployeeDashboard />
             </ProtectedRoute>
           }
         />
