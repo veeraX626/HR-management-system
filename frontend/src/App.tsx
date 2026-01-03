@@ -16,6 +16,18 @@ import { AttendancePage } from '@/pages/AttendancePage'
 import { LeavesPage } from '@/pages/LeavesPage'
 import { PayrollPage } from '@/pages/PayrollPage'
 
+// Dashboard redirect component for role-based routing
+const DashboardRedirect = () => {
+  const { user } = useAuthStore()
+  
+  // Admin users go to employee management, others go to default dashboard
+  if (user?.role === 'ADMIN') {
+    return <Navigate to="/employees" replace />
+  }
+  
+  return <DashboardPage />
+}
+
 function App() {
   const { hydrate, isAuthenticated } = useAuthStore()
 
@@ -48,7 +60,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <DashboardPage />
+              <DashboardRedirect />
             </ProtectedRoute>
           }
         />
