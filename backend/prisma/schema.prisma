@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - Core employee/admin user
+model User {
+  id              String    @id @default(cuid())
+  employeeId      String    @unique
+  email           String    @unique
+  password        String
+  role            Role      @default(EMPLOYEE)
+  isVerified      Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  profile         Profile?
+  attendances     Attendance[]
+  leaves          Leave[]
+  approvingLeaves Leave[]   @relation("LeaveApprover")
+
+  @@index([email])
+  @@index([employeeId])
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+// Profile model - Personal and job details
+model Profile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  firstName       String
+  lastName        String
+  phone           String?
+  dateOfBirth     DateTime?
+  gender          String?
+  address         String?
+  city            String?
+  state           String?
+  zipCode         String?
+  
+  // Job details
+  department      String?
+  position        String?
+  joiningDate     DateTime?
+  reportingTo     String?
+  
+  // Salary (stored as JSON for flexibility)
+  salary          Json?     // { baseSalary, dearness, allowances, deductions }
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Attendance model
+model Attendance {
+  id              String    @id @default(cuid())
+  userId          String
+  date            DateTime
+  checkInTime     DateTime?
+  checkOutTime    DateTime?
+  status          AttendanceStatus @default(ABSENT)
+  remarks         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  LEAVE
+}
+
+// Leave model
+model Leave {
+  id              String    @id @default(cuid())
+  userId          String
+  type            LeaveType
+  startDate       DateTime
+  endDate         DateTime
+  remarks         String?
+  status          LeaveStatus @default(PENDING)
+  approverId      String?
+  approvedAt      DateTime?
+  rejectionReason String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  approver        User?     @relation("LeaveApprover", fields: [approverId], references: [id])
+
+  @@index([userId])
+  @@index([approverId])
+  @@index([status])
+}
+
+enum LeaveType {
+  PAID
+  SICK
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
