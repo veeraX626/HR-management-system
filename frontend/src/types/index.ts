@@ -1,104 +1,96 @@
-export type UserRole = 'ADMIN' | 'EMPLOYEE'
+export type UserRole = 'employee' | 'admin'
 
 export interface User {
   id: string
+  employeeId: string
+  name: string
   email: string
-  employeeId?: string
-  firstName: string
-  lastName: string
   role: UserRole
-  profileImage?: string
-  createdAt: string
-  updatedAt: string
-}
-
-export interface Profile {
-  id: string
-  userId: string
-  phone?: string
-  dateOfBirth?: string
-  address?: string
-  city?: string
-  state?: string
-  zipCode?: string
-  jobTitle?: string
-  department?: string
+  department: string
+  position: string
+  avatar?: string
+  joinDate: string
   salary?: number
-  joiningDate?: string
-  reportsTo?: string
-  updatedAt: string
+  phone?: string
+  address?: string
 }
 
-export interface AttendanceRecord {
+export interface AuthState {
+  user: User | null
+  isAuthenticated: boolean
+  isLoading: boolean
+}
+
+export interface Employee {
   id: string
-  userId: string
+  employeeId: string
+  name: string
+  email: string
+  department: string
+  position: string
+  joinDate: string
+  status: 'active' | 'inactive' | 'on-leave'
+  avatar?: string
+  phone?: string
+  salary?: number
+}
+
+export interface DashboardStats {
+  totalEmployees: number
+  employeesChange: number
+  pendingLeaves: number
+  leavesChange: number
+  attendanceRate: number
+  attendanceChange: number
+  payrollStatus: string
+}
+
+export interface Attendance {
+  id: string
+  employeeId: string
+  employeeName: string
   date: string
-  checkInTime?: string
-  checkOutTime?: string
-  status: 'PRESENT' | 'ABSENT' | 'HALF_DAY' | 'ON_LEAVE'
-  createdAt: string
-  updatedAt: string
+  checkIn: string
+  checkOut?: string
+  status: 'present' | 'absent' | 'late' | 'half-day'
+  hoursWorked?: number
 }
 
 export interface Leave {
   id: string
-  userId: string
-  type: 'ANNUAL' | 'SICK' | 'EMERGENCY' | 'UNPAID'
+  employeeId: string
+  employeeName: string
+  leaveType: 'sick' | 'casual' | 'annual' | 'unpaid'
   startDate: string
   endDate: string
-  duration: number
+  days: number
   reason: string
-  status: 'PENDING' | 'APPROVED' | 'REJECTED'
+  status: 'pending' | 'approved' | 'rejected'
+  appliedDate: string
   approvedBy?: string
-  approvalDate?: string
-  comments?: string
-  createdAt: string
-  updatedAt: string
 }
 
-export interface AuthResponse {
-  success: boolean
+export interface Activity {
+  id: string
+  type: 'leave' | 'attendance' | 'profile' | 'system'
   message: string
-  token: string
-  user: User
+  timestamp: string
+  user: string
 }
 
-export interface ApiResponse<T> {
-  success: boolean
-  message: string
-  data?: T
-  error?: string
-}
-
-export interface PaginatedResponse<T> {
-  success: boolean
-  data: T[]
-  pagination: {
-    total: number
-    page: number
-    limit: number
-    pages: number
-  }
+export interface LoginCredentials {
+  email: string
+  password: string
+  rememberMe?: boolean
 }
 
 export interface SignupData {
-  email: string
-  password: string
-  confirmPassword: string
-  firstName: string
-  lastName: string
   employeeId: string
-  role: UserRole
-}
-
-export interface LoginData {
+  name: string
   email: string
   password: string
-}
-
-export interface LeaveRequest {
-  type: 'ANNUAL' | 'SICK' | 'EMERGENCY' | 'UNPAID'
-  startDate: string
-  endDate: string
-  reason: string
+  department: string
+  position: string
+  phone?: string
+  joinDate: string
 }

@@ -4,9 +4,12 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { logger } from './src/utils/logger.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
+import prisma from './src/config/database.js';
 
 // Routes
 import authRoutes from './src/routes/auth.js';
+import adminRoutes from './src/routes/admin.js';
+import meRoutes from './src/routes/me.js';
 import profileRoutes from './src/routes/profile.js';
 import attendanceRoutes from './src/routes/attendance.js';
 import leaveRoutes from './src/routes/leaves.js';
@@ -58,14 +61,18 @@ app.use((req, res, next) => {
 });
 
 // ==================== Health Check ====================
-app.get('/health', (req, res) => {
+app.get('/health', async (req, res) => {
   try {
+    // Test Prisma connection
+    await prisma.$queryRaw`SELECT 1`;
+    
     const health = {
       status: 'OK',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       environment: NODE_ENV,
-      version: '1.0.0'
+      version: '1.0.0',
+      database: 'Connected'
     };
     
     console.log('🏥 [HEALTH] Health check passed');
@@ -75,7 +82,8 @@ app.get('/health', (req, res) => {
     res.status(503).json({
       status: 'ERROR',
       message: 'Health check failed',
-      error: error.message
+      error: error.message,
+      database: 'Disconnected'
     });
   }
 });
@@ -86,6 +94,12 @@ console.log('📚 [ROUTES] Loading API routes...');
 try {
   app.use('/api/auth', authRoutes);
   console.log('✅ [ROUTES] Auth routes loaded');
+  
+  app.use('/api/admin', adminRoutes);
+  console.log('✅ [ROUTES] Admin routes loaded');
+  
+  app.use('/api/me', meRoutes);
+  console.log('✅ [ROUTES] Me (self) routes loaded');
   
   app.use('/api/profile', profileRoutes);
   console.log('✅ [ROUTES] Profile routes loaded');
