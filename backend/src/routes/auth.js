@@ -5,18 +5,19 @@ import prisma from '../config/database.js';
 import { logger } from '../utils/logger.js';
 import { emailService } from '../utils/emailService.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { generateEmployeeId } from '../utils/employeeIdGenerator.js';
 
 const router = express.Router();
 
 // ==================== SIGNUP ====================
 router.post('/signup', asyncHandler(async (req, res) => {
-  const { employeeId, email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName, yearOfJoining } = req.body;
 
   // Validation
-  if (!employeeId || !email || !password || !firstName || !lastName) {
+  if (!email || !password || !firstName || !lastName) {
     return res.status(400).json({
       success: false,
-      message: 'All fields are required'
+      message: 'Email, password, first name, and last name are required'
     });
   }
 
@@ -27,20 +28,18 @@ router.post('/signup', asyncHandler(async (req, res) => {
     });
   }
 
-  // Check if user already exists
-  const existingUser = await prisma.user.findFirst({
-    where: {
-      OR: [
-        { email },
-        { employeeId }
-      ]
-    }
+  // Generate Employee ID automatically
+  const employeeId = await generateEmployeeId(firstName, lastName, yearOfJoining);
+
+  // Check if email already exists
+  const existingUser = await prisma.user.findUnique({
+    where: { email }
   });
 
   if (existingUser) {
     return res.status(409).json({
       success: false,
-      message: 'Email or Employee ID already exists'
+      message: 'Email already exists'
     });
   }
 

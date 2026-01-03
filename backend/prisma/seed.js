@@ -20,7 +20,7 @@ async function main() {
     // Create Admin User
     const admin = await prisma.user.create({
       data: {
-        employeeId: 'ADMIN001',
+        employeeId: 'OIJA20230001',
         email: 'admin@dayflow-hrms.com',
         password: adminPassword,
         role: 'ADMIN',
@@ -50,7 +50,7 @@ async function main() {
     // Create Employee 1
     const employee1 = await prisma.user.create({
       data: {
-        employeeId: 'EMP001',
+        employeeId: 'OIJD20220001',
         email: 'employee1@dayflow-hrms.com',
         password: employeePassword,
         role: 'EMPLOYEE',
@@ -86,7 +86,7 @@ async function main() {
     // Create Employee 2
     const employee2 = await prisma.user.create({
       data: {
-        employeeId: 'EMP002',
+        employeeId: 'OIMD20230002',
         email: 'employee2@dayflow-hrms.com',
         password: employeePassword,
         role: 'EMPLOYEE',

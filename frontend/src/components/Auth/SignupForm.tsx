@@ -13,7 +13,7 @@ const signupSchema = z
     firstName: z.string().min(2, 'First name is required'),
     lastName: z.string().min(2, 'Last name is required'),
     email: z.string().email('Invalid email'),
-    employeeId: z.string().min(3, 'Employee ID is required'),
+    yearOfJoining: z.number().int().min(2000).max(new Date().getFullYear()),
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters')
@@ -88,13 +88,36 @@ export const SignupForm = () => {
         className="!bg-white/5 !border-white/10 !text-white !placeholder-white/40 focus:!border-primary-400 !rounded-lg"
       />
 
-      {/* Employee ID */}
-      <Input
-        placeholder="Employee ID"
-        {...register('employeeId')}
-        error={errors.employeeId?.message}
-        className="!bg-white/5 !border-white/10 !text-white !placeholder-white/40 focus:!border-primary-400 !rounded-lg"
-      />
+      {/* Year of Joining */}
+      <div className="relative">
+        <select
+          {...register('yearOfJoining', { valueAsNumber: true })}
+          defaultValue={new Date().getFullYear()}
+          className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/40 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all outline-none"
+        >
+          <option value="" disabled>
+            Year of Joining
+          </option>
+          {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+            <option key={year} value={year} className="bg-slate-900">
+              {year}
+            </option>
+          ))}
+        </select>
+        {errors.yearOfJoining && (
+          <p className="mt-1 text-xs text-red-400">{errors.yearOfJoining.message}</p>
+        )}
+      </div>
+
+      {/* Employee ID Info */}
+      <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-400/30">
+        <p className="text-xs text-blue-300 uppercase tracking-wide font-semibold mb-1">
+          Employee ID Auto-Generated
+        </p>
+        <p className="text-xs text-blue-200">
+          Format: OI + Initials + Year + Serial (e.g., OIJOD20260001)
+        </p>
+      </div>
 
       {/* Password */}
       <div className="relative">
