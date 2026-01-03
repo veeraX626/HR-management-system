@@ -1,0 +1,478 @@
+{
+  "info": {
+    "_postman_id": "dayflow-hrms-auth-collection",
+    "name": "Dayflow HRMS - Complete Auth Flow",
+    "description": "Complete authentication and admin testing for Dayflow HRMS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Auth - Admin Sign In",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@dayflow.com\",\n  \"password\": \"Admin123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/auth/signin",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "auth", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Auth - Employee 1 Sign In",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"employee1@dayflow.com\",\n  \"password\": \"Employee@123456\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/auth/signin",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "auth", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Auth - Invalid Password (401)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@dayflow.com\",\n  \"password\": \"WrongPassword\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/auth/signin",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "auth", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. Auth - Missing Credentials (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@dayflow.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/auth/signin",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "auth", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. Admin - List All Employees",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ADMIN_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/admin/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "employees"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. Admin - Create New Employee",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ADMIN_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"employeeId\": \"E004\",\n  \"email\": \"employee4@dayflow.com\",\n  \"password\": \"NewEmp@123456\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"phone\": \"+1-555-0104\",\n  \"gender\": \"Male\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/admin/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "employees"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. Admin - Duplicate EmployeeId (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ADMIN_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"employeeId\": \"E001\",\n  \"email\": \"newemail@dayflow.com\",\n  \"password\": \"Test@123456\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/admin/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "employees"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "9. Admin - Missing Required Fields (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ADMIN_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"employeeId\": \"E005\",\n  \"email\": \"test@dayflow.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/admin/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "employees"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10. Admin - No Authorization (401)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/admin/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "employees"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11. Admin - Employee Token (403)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_EMPLOYEE_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/admin/employees",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "employees"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "12. Profile - Get Current User",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "13. Profile - Update Own Profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"phone\": \"+1-999-9999\",\n  \"gender\": \"Female\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "14. Attendance - Get My Records",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_EMPLOYEE_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/attendance",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "attendance"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "15. Attendance - Check In",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_EMPLOYEE_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/attendance/check-in",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "attendance", "check-in"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "16. Attendance - Check Out",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_EMPLOYEE_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/attendance/check-out",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "attendance", "check-out"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "17. Leaves - Get My Leaves",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_EMPLOYEE_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/leaves",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "leaves"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "18. Leaves - Apply for Leave",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_EMPLOYEE_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"SICK\",\n  \"startDate\": \"2025-02-01\",\n  \"endDate\": \"2025-02-02\",\n  \"remarks\": \"Medical appointment\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/leaves",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "leaves"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "19. Leaves - Approve (Admin)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ADMIN_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/leaves/LEAVE_ID_HERE/approve",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "leaves", "LEAVE_ID_HERE", "approve"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "20. Leaves - Reject (Admin)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ADMIN_TOKEN_HERE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rejectionReason\": \"Insufficient notice\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/leaves/LEAVE_ID_HERE/reject",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "leaves", "LEAVE_ID_HERE", "reject"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -29,16 +29,12 @@ body {
 
 /* Animation utilities */
 @layer utilities {
-  .transition-all {
-    @apply transition-all duration-300 ease-in-out;
-  }
-
   .fade-in {
-    @apply animate-[fadeIn_0.3s_ease-in];
+    animation: fadeIn 0.3s ease-in;
   }
 
   .slide-in {
-    @apply animate-[slideIn_0.3s_ease-out];
+    animation: slideIn 0.3s ease-out;
   }
 }
 

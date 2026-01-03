@@ -1,11 +1,13 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { Loader } from 'lucide-react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
-  variant?: 'primary' | 'secondary' | 'danger'
+  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'glass'
   size?: 'sm' | 'md' | 'lg'
   fullWidth?: boolean
   isLoading?: boolean
+  icon?: ReactNode
 }
 
 export const Button = ({
@@ -14,22 +16,25 @@ export const Button = ({
   size = 'md',
   fullWidth = false,
   isLoading = false,
+  icon,
   disabled,
   className,
   ...props
 }: ButtonProps) => {
   const baseClasses =
-    'font-medium rounded-lg transition focus:outline-none focus:ring-2 focus:ring-offset-2'
+    'font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
 
   const variantClasses = {
-    primary: 'bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500',
-    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-400',
-    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
+    primary: 'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white shadow-lg hover:shadow-xl hover:scale-105 focus:ring-primary-500',
+    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800 shadow-md hover:shadow-lg hover:scale-105 focus:ring-gray-400 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white',
+    danger: 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg hover:shadow-xl hover:scale-105 focus:ring-red-500',
+    success: 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl hover:scale-105 focus:ring-green-500',
+    glass: 'bg-white/20 hover:bg-white/30 backdrop-blur-lg border border-white/30 text-white shadow-lg hover:shadow-xl hover:scale-105 focus:ring-white/50',
   }
 
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
+    md: 'px-4 py-2.5 text-base',
     lg: 'px-6 py-3 text-lg',
   }
 
@@ -41,12 +46,21 @@ export const Button = ({
         ${variantClasses[variant]}
         ${sizeClasses[size]}
         ${fullWidth ? 'w-full' : ''}
-        ${disabled || isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${className}
       `}
       {...props}
     >
-      {isLoading ? 'Loading...' : children}
+      {isLoading ? (
+        <>
+          <Loader size={16} className="animate-spin" />
+          <span>Loading...</span>
+        </>
+      ) : (
+        <>
+          {icon}
+          {children}
+        </>
+      )}
     </button>
   )
 }
